@@ -8,7 +8,7 @@ A fully python based Streamlit application to simulate the chat playground exper
 
 To get started, you will need to create a `.env` file in the app folder by rename the .env.example file to .env. You can achieve this manually or by executing the command:
 ```sh
-mv frontend/.env.temp frontend/.env
+mv app/.env.temp app/.env
 ```
 Bear in mind that the model names are the deployment names of the models, which can be different as the model names in the Azure OpenAI Studio.
 ### Running the App locally using Streamlit
@@ -26,7 +26,7 @@ To run the app, simply run the `streamlit run .\app\AOAI_Chatbot.py` from the ro
 
 ### Running the App on Azure
 
-To run the app on Azure, you can use the Azure App Service.  You can follow the instructions [here](https://learn.microsoft.com/en-us/azure/app-service/quickstart-custom-container?tabs=dotnet&pivots=container-linux-azure-portal) to create an Azure Container Registry, tag the local image and push to Azure Container Registry and  the deploy the app to Azure Web App.
+To run the app on Azure, you can use the Azure App Service.  You can follow the instructions [here](https://learn.microsoft.com/en-us/azure/app-service/quickstart-custom-container?tabs=dotnet&pivots=container-linux-azure-portal) to create an Azure Container Registry, tag the local docker image and push to Azure Container Registry and  the deploy the app to Azure Web App.
 
 ### Python Dependencies
 
