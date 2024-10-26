@@ -1,4 +1,4 @@
-# Azure OpenAi PlayGround by Streamlit
+# Azure OpenAI PlayGround by Streamlit
 
 A fully python based Streamlit application to simulate the chat playground experience of Azure OpenAI Studio with streaming mode.
 
@@ -8,7 +8,7 @@ A fully python based Streamlit application to simulate the chat playground exper
 
 To get started, you will need to create a `.env` file in the app folder by rename the .env.example file to .env. You can achieve this manually or by executing the command:
 ```sh
-mv app/.env.temp app/.env
+mv app/.env.example app/.env
 ```
 Bear in mind that the model names are the deployment names of the models, which can be different as the model names in the Azure OpenAI Studio.
 ### Running the App locally using Streamlit
