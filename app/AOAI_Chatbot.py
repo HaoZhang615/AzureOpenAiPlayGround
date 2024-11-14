@@ -12,9 +12,9 @@ if "messages" not in st.session_state:
     st.session_state.messages = []  
 
 # Azure Open AI Configuration
-api_base = os.getenv("AOAI_API_BASE") # your endpoint should look like the following https://YOUR_RESOURCE_NAME.openai.azure.com/
-api_key = os.getenv("AOAI_API_KEY")
-api_version = os.getenv("AOAI_API_VERSION")
+api_base = st.secrets["Azure_OpenAI_Endpoint"] # your endpoint should look like the following https://YOUR_RESOURCE_NAME.openai.azure.com/
+api_key = st.secrets["Azure_OpenAI_Key"]
+api_version = "2024-02-01"
 client = AzureOpenAI(
     api_key=api_key,  
     api_version=api_version,
@@ -23,6 +23,27 @@ client = AzureOpenAI(
 
 # Sidebar Configuration
 with st.sidebar:
+    # input box for user to enter their Azure OpenAI endpoint
+    if 'Azure_OpenAI_Endpoint' in st.secrets:
+        st.success('Azure OpenAI endpoint already provided!', icon='✅')
+        url = st.secrets['Azure_OpenAI_Endpoint']
+    else:
+        url = st.text_input('Enter Azure OpenAI endpoint: e.g. https://xxxx.openai.azure.com/', type='password')
+
+    # input box for user to enter their Azure OpenAI key
+    if 'Azure_OpenAI_Key' in st.secrets:
+        st.success('Azure OpenAI API Key already provided!', icon='✅')
+        api_key = st.secrets['Azure_OpenAI_Key']
+    else:
+        api_key = st.text_input('Enter Azure OpenAI API key:', type='password')
+
+    # input box for user to enter their Azure OpenAI model deployment name
+    if 'Azure_OpenAI_Model_Deployment_Name' in st.secrets:
+        st.success('Azure OpenAI model deployment name already provided!', icon='✅')
+        model_name = st.secrets['Azure_OpenAI_Model_Deployment_Name']
+    else:
+        model_name = st.text_input('Enter Azure OpenAI model deployment name:')
+
     # Temperature and token slider
     temperature = st.sidebar.slider(
         "Temperature",
@@ -42,15 +63,6 @@ with st.sidebar:
     default_system_message = "You are an helpful AI assistant."
     # make customizable system prompt
     system_prompt = st.sidebar.text_area("System Prompt", default_system_message, height=200)
-
-    # dropdown for selecting the model with options for gpt-4, gpt-4o and gpt-4o-mini, default is gpt-4. 
-    model = st.selectbox("Select Model", ["gpt-4","gpt-4o","gpt-4o-mini"], index=0)
-    if model == "gpt-4":
-        model = os.getenv("GPT4_MODEL_NAME")
-    elif model == "gpt-4o":    
-        model = os.getenv("GPT4o_MODEL_NAME")
-    else:
-        model = os.getenv("GPT4o_mini_MODEL_NAME")
 
     def clear_chat_history():
         st.session_state.messages = []
@@ -76,7 +88,7 @@ if prompt := st.chat_input("type here..."):
         messages = [system_message] + [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
         
         stream = client.chat.completions.create(  
-            model=model,  
+            model=model_name,  
             messages=messages,  
             stream=True,  
             temperature=temperature,  
