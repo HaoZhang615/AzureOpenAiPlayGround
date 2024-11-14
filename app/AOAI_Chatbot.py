@@ -11,24 +11,14 @@ st.title("Azure OpenAI Chatbot")
 if "messages" not in st.session_state:  
     st.session_state.messages = []  
 
-# Azure Open AI Configuration
-api_base = st.secrets["Azure_OpenAI_Endpoint"] # your endpoint should look like the following https://YOUR_RESOURCE_NAME.openai.azure.com/
-api_key = st.secrets["Azure_OpenAI_Key"]
-api_version = "2024-02-01"
-client = AzureOpenAI(
-    api_key=api_key,  
-    api_version=api_version,
-    azure_endpoint = api_base,
-)
-
 # Sidebar Configuration
 with st.sidebar:
     # input box for user to enter their Azure OpenAI endpoint
     if 'Azure_OpenAI_Endpoint' in st.secrets:
         st.success('Azure OpenAI endpoint already provided!', icon='✅')
-        url = st.secrets['Azure_OpenAI_Endpoint']
+        azure_endpoint = st.secrets['Azure_OpenAI_Endpoint']
     else:
-        url = st.text_input('Enter Azure OpenAI endpoint: e.g. https://xxxx.openai.azure.com/', type='password')
+        azure_endpoint = st.text_input('Enter Azure OpenAI endpoint: e.g. https://xxxx.openai.azure.com/', type='password')
 
     # input box for user to enter their Azure OpenAI key
     if 'Azure_OpenAI_Key' in st.secrets:
@@ -69,6 +59,14 @@ with st.sidebar:
         st.session_state.chat_history = []
     if st.button("Restart Conversation :arrows_counterclockwise:"):
         clear_chat_history()
+
+# Azure Open AI Configuration
+api_version = "2024-02-01"
+client = AzureOpenAI(
+    api_key=api_key,  
+    api_version=api_version,
+    azure_endpoint = azure_endpoint,
+)
   
 # Display chat history  
 for message in st.session_state.messages:  
